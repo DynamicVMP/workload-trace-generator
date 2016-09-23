@@ -2,9 +2,6 @@ package generator;
 
 import distributions.UsageDistribution;
 
-import java.util.List;
-import java.util.UUID;
-
 /**
  * Created by augusto on 9/18/16.
  */
@@ -15,7 +12,8 @@ public class VirtualMachine {
     private Integer id;
     private int initTime;
     private int endTime;
-    private UsageDistribution usageDistribution;
+    private UsageDistribution serverUsageDistribution;
+    private UsageDistribution netUsageDistribution;
     private InstanceType instanceType;
 
     public VirtualMachine(Integer id, int actualTime, int endTime, int sla, CloudService cloudService) {
@@ -26,7 +24,8 @@ public class VirtualMachine {
         this.cloudService = cloudService;
         this.instanceType = InstanceManager.getInstance().getRandomInstanceType();
 
-        this.usageDistribution = new UsageDistribution(ConfigurationManager.getUsageConfiguration(), endTime - initTime);
+        this.serverUsageDistribution = new UsageDistribution(ConfigurationManager.getUsageConfiguration(), endTime - initTime);
+        this.netUsageDistribution = new UsageDistribution(ConfigurationManager.getUsageConfiguration(), endTime - initTime);
     }
 
     public int getInitTime() {
@@ -45,12 +44,12 @@ public class VirtualMachine {
         this.endTime = endTime;
     }
 
-    public UsageDistribution getUsageDistribution() {
-        return usageDistribution;
+    public UsageDistribution getServerUsageDistribution() {
+        return serverUsageDistribution;
     }
 
-    public void setUsageDistribution(UsageDistribution usageDistribution) {
-        this.usageDistribution = usageDistribution;
+    public void setServerUsageDistribution(UsageDistribution serverUsageDistribution) {
+        this.serverUsageDistribution = serverUsageDistribution;
     }
 
     public InstanceType getInstanceType() {
@@ -83,5 +82,13 @@ public class VirtualMachine {
 
     public void setSla(int sla) {
         this.sla = sla;
+    }
+
+    public UsageDistribution getNetUsageDistribution() {
+        return netUsageDistribution;
+    }
+
+    public void setNetUsageDistribution(UsageDistribution netUsageDistribution) {
+        this.netUsageDistribution = netUsageDistribution;
     }
 }
