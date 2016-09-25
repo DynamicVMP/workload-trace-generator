@@ -1,6 +1,6 @@
 package generator;
 
-import taxonomy.InstanceType;
+import intanceTypes.InstanceType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -82,8 +82,12 @@ public class VirtualMachine {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         VirtualMachine that = (VirtualMachine) o;
 

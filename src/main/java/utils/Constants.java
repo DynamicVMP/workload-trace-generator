@@ -5,5 +5,7 @@ package utils;
  */
 public class Constants {
     public static final String UNIFORM = "UNIFORM";
-        public static final String POISSON = "POISSON";
+    public static final String POISSON = "POISSON";
+
+    private Constants() {}
 }

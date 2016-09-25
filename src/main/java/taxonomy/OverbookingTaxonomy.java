@@ -5,9 +5,9 @@ import generator.configurations.ElasticityConfiguration;
 /**
  * Created by augusto on 9/24/16.
  */
-public class OverbookingDistribution extends ElasticityAbstract{
+public class OverbookingTaxonomy extends TaxonomyAbstract {
 
-    public OverbookingDistribution(ElasticityConfiguration configuration) {
+    public OverbookingTaxonomy(ElasticityConfiguration configuration) {
         super(configuration);
     }
 

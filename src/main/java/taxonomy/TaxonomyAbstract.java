@@ -9,11 +9,11 @@ import utils.Constants;
 /**
  * Created by augusto on 9/24/16.
  */
-abstract class ElasticityAbstract {
+abstract class TaxonomyAbstract {
     protected DistributionInterface distribution;
     protected String distributionType;
 
-    protected ElasticityAbstract(ElasticityConfiguration configuration) {
+    protected TaxonomyAbstract(ElasticityConfiguration configuration) {
         this.distributionType = configuration.getDistributionType();
         if (Constants.UNIFORM.equals(distributionType)) {
             this.distribution = new UniformDistribution(configuration.getFloor(), configuration.getCeiling());

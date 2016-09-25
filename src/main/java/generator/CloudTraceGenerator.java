@@ -1,8 +1,8 @@
 package generator;
 
-import taxonomy.HorizontalElasticity;
-import taxonomy.OverbookingDistribution;
-import taxonomy.VerticalElasticity;
+import taxonomy.HorizontalTaxonomy;
+import taxonomy.OverbookingTaxonomy;
+import taxonomy.VerticalTaxonomy;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,11 +14,13 @@ public class CloudTraceGenerator {
 
     private static List<CloudService> cloudServiceList;
 
+    private CloudTraceGenerator() {}
+
     public static List<CloudService> generateVirtualMachinesRequestsArrivals(
-            HorizontalElasticity horizontalElasticity,
-            VerticalElasticity verticalElasticity,
-            OverbookingDistribution serverOverbooking,
-            OverbookingDistribution networkOverbooking,
+            HorizontalTaxonomy horizontalElasticity,
+            VerticalTaxonomy verticalElasticity,
+            OverbookingTaxonomy serverOverbooking,
+            OverbookingTaxonomy networkOverbooking,
             int numberOfServices,
             int initTime,
             int endTime
@@ -32,7 +34,6 @@ public class CloudTraceGenerator {
                     .collect(Collectors.toList());
 
             livingCloudServices.forEach(cloudService -> {
-                List<VirtualMachine> virtualMachineList;
                 Integer vmQuantity = horizontalElasticity.getNextVmQuantity();
 
                 generateVirtualMachinesForSingleService(finalActualTime, vmQuantity, cloudService, serverOverbooking, networkOverbooking, verticalElasticity);
@@ -46,9 +47,9 @@ public class CloudTraceGenerator {
             Integer actualTime,
             Integer vmQuantity,
             CloudService cloudService,
-            OverbookingDistribution serverOverbooking,
-            OverbookingDistribution networkOverbooking,
-            VerticalElasticity verticalElasticity
+            OverbookingTaxonomy serverOverbooking,
+            OverbookingTaxonomy networkOverbooking,
+            VerticalTaxonomy verticalElasticity
     ) {
         Random random = new Random();
 

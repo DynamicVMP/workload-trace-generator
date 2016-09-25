@@ -2,15 +2,21 @@ package taxonomy;
 
 import distributions.PoissonDistribution;
 import generator.configurations.ElasticityConfiguration;
+import intanceTypes.InstanceManager;
+import intanceTypes.InstanceType;
 import utils.Constants;
 
 /**
  * Created by augusto on 9/24/16.
  */
-public class VerticalElasticity extends ElasticityAbstract{
-    public VerticalElasticity(ElasticityConfiguration configuration) {
-        // The lambda value cannot be bigger than the number of instance types the generator supports;
-        // Currently the generator supports: 11
+public class VerticalTaxonomy extends TaxonomyAbstract {
+
+    /**
+     * <p>The lambda value cannot be bigger than the number of instance types the generator supports</p>
+     * <p>Currently the generator supports: 11</p>
+     * @param configuration
+     */
+    public VerticalTaxonomy(ElasticityConfiguration configuration) {
         super(configuration);
 
         if (Constants.POISSON.equals(configuration.getDistributionType()) && configuration.getLambda().compareTo(10F) > 0) {

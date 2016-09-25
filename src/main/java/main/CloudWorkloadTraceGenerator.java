@@ -1,9 +1,11 @@
+package main;
+
 import generator.CloudService;
 import generator.CloudTraceGenerator;
 import generator.configurations.ConfigurationManager;
-import taxonomy.HorizontalElasticity;
-import taxonomy.OverbookingDistribution;
-import taxonomy.VerticalElasticity;
+import taxonomy.HorizontalTaxonomy;
+import taxonomy.OverbookingTaxonomy;
+import taxonomy.VerticalTaxonomy;
 import utils.PrintTraceUtils;
 
 import java.util.List;
@@ -13,22 +15,24 @@ import java.util.List;
  */
 public class CloudWorkloadTraceGenerator {
 
+    private CloudWorkloadTraceGenerator() {}
+
     public static void main(String[] args) {
         ConfigurationManager configurationManagerInstance = ConfigurationManager.getInstance();
 
-        HorizontalElasticity horizontalElasticity = new HorizontalElasticity(
+        HorizontalTaxonomy horizontalElasticity = new HorizontalTaxonomy(
                 configurationManagerInstance.getHorizontalElasticityConfiguration()
         );
 
-        VerticalElasticity verticalElasticity = new VerticalElasticity(
+        VerticalTaxonomy verticalElasticity = new VerticalTaxonomy(
                 configurationManagerInstance.getVerticalElasticityConfiguration()
         );
 
-        OverbookingDistribution serverOverbooking = new OverbookingDistribution(
+        OverbookingTaxonomy serverOverbooking = new OverbookingTaxonomy(
                 configurationManagerInstance.getServerOverbookingConfiguration()
         );
 
-        OverbookingDistribution networkOverbooking = new OverbookingDistribution(
+        OverbookingTaxonomy networkOverbooking = new OverbookingTaxonomy(
                 configurationManagerInstance.getNetworkOverbookingConfiguration()
         );
 

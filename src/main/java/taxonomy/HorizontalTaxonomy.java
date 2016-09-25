@@ -12,8 +12,8 @@ import generator.configurations.ElasticityConfiguration;
  * @author Augusto Amarilla
  * @since 9/17/16.
  */
-public class HorizontalElasticity extends ElasticityAbstract {
-    public HorizontalElasticity(ElasticityConfiguration configuration){
+public class HorizontalTaxonomy extends TaxonomyAbstract {
+    public HorizontalTaxonomy(ElasticityConfiguration configuration){
         super(configuration);
     }
 

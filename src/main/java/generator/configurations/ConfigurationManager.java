@@ -8,13 +8,13 @@ package generator.configurations;
  */
 public class ConfigurationManager {
     private static ConfigurationManager instance = null;
-    private final Integer MAX_VMS_PER_SERVICE = 10;
+    private static final Integer MAX_VMS_PER_SERVICE = 10;
 
     private final UsageConfiguration usageConfiguration;
     private final Integer scenarioStartTime;
     private final Integer scenarioEndTime;
     private final Integer numberOfServices;
-    private final String inputFileLocation;
+    private final String instanceTypesFileLocation;
     private final String outputFileLocation;
 
     private final Float revenueCPU;
@@ -25,14 +25,6 @@ public class ConfigurationManager {
     private ElasticityConfiguration verticalElasticityConfiguration;
     private ElasticityConfiguration serverOverbookingConfiguration;
     private ElasticityConfiguration networkOverbookingConfiguration;
-
-    public static ConfigurationManager getInstance() {
-        if (instance == null) {
-            instance = new ConfigurationManager();
-        }
-
-        return instance;
-    }
 
     protected ConfigurationManager() {
         scenarioStartTime = 1;
@@ -45,7 +37,7 @@ public class ConfigurationManager {
         revenueNET = 0.001F;
 
         locationPrefix = "./";
-        inputFileLocation = "input/input_V2.csv";
+        instanceTypesFileLocation = "input/instanceTypes.csv";
         outputFileLocation = "output/output.out";
 
         // Important the ceiling of the Horizontal Elasticity Distribution must not exceed the Maximum number of VMs per Service
@@ -54,6 +46,14 @@ public class ConfigurationManager {
 
         serverOverbookingConfiguration = new ElasticityConfiguration(0, 100);
         networkOverbookingConfiguration = new ElasticityConfiguration(0, 100);
+    }
+
+    public static ConfigurationManager getInstance() {
+        if (instance == null) {
+            instance = new ConfigurationManager();
+        }
+
+        return instance;
     }
 
     public Float getRevenueCPU() {
@@ -92,8 +92,8 @@ public class ConfigurationManager {
         return numberOfServices;
     }
 
-    public String getInputFileLocation() {
-        return locationPrefix + inputFileLocation;
+    public String getInstanceTypesFileLocation() {
+        return locationPrefix + instanceTypesFileLocation;
     }
 
     public String getOutputFileLocation() {
