@@ -1,94 +1,103 @@
 package generator;
 
-import distributions.UsageDistribution;
+import taxonomy.InstanceType;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by augusto on 9/18/16.
  */
 public class VirtualMachine {
 
-    private int sla;
-    private CloudService cloudService;
-    private Integer id;
-    private int initTime;
-    private int endTime;
-    private UsageDistribution serverUsageDistribution;
-    private UsageDistribution netUsageDistribution;
-    private InstanceType instanceType;
+    private static Random randomGenerator = new Random();
 
-    public VirtualMachine(Integer id, int actualTime, int endTime, int sla, CloudService cloudService) {
-        this.id = id;
-        this.initTime = actualTime;
-        this.endTime = endTime;
-        this.sla = sla;
+    private final Integer id;
+    private final CloudService cloudService;
+    private final int sla;
+
+    private final Map<Integer, Integer> serverUsageMap;
+    private final Map<Integer, Integer> networkUsageMap;
+    private final Map<Integer, InstanceType> instanceTypeMap;
+
+    private final Integer startTime;
+    private Integer endTime;
+
+    public VirtualMachine(Integer virtualMachineNextId, CloudService cloudService, Integer startTime) {
+        this.id = virtualMachineNextId;
         this.cloudService = cloudService;
-        this.instanceType = InstanceManager.getInstance().getRandomInstanceType();
 
-        this.serverUsageDistribution = new UsageDistribution(ConfigurationManager.getUsageConfiguration(), endTime - initTime);
-        this.netUsageDistribution = new UsageDistribution(ConfigurationManager.getUsageConfiguration(), endTime - initTime);
+        this.sla = randomGenerator.nextInt(5);
+
+        this.startTime = startTime;
+        this.endTime = cloudService.getEndTime();
+
+        this.serverUsageMap = new HashMap<>();
+        this.networkUsageMap = new HashMap<>();
+        this.instanceTypeMap = new HashMap<>();
     }
 
-    public int getInitTime() {
-        return initTime;
+    public void addStateSnapshot(Integer serverUsagePercentage, Integer networkUsagePercentage, InstanceType instanceType, Integer snapshotTime) {
+        this.serverUsageMap.put(snapshotTime, serverUsagePercentage);
+        this.networkUsageMap.put(snapshotTime, networkUsagePercentage);
+        this.instanceTypeMap.put(snapshotTime, instanceType);
     }
 
-    public void setInitTime(int initTime) {
-        this.initTime = initTime;
+    public Map<Integer, Integer> getServerUsageMap() {
+        return serverUsageMap;
     }
 
-    public int getEndTime() {
-        return endTime;
+    public Map<Integer, Integer> getNetworkUsageMap() {
+        return networkUsageMap;
     }
 
-    public void setEndTime(int endTime) {
-        this.endTime = endTime;
-    }
-
-    public UsageDistribution getServerUsageDistribution() {
-        return serverUsageDistribution;
-    }
-
-    public void setServerUsageDistribution(UsageDistribution serverUsageDistribution) {
-        this.serverUsageDistribution = serverUsageDistribution;
-    }
-
-    public InstanceType getInstanceType() {
-        return instanceType;
-    }
-
-    public void setInstanceType(InstanceType instanceType) {
-        this.instanceType = instanceType;
-    }
-
-    public CloudService getCloudService() {
-        return cloudService;
-    }
-
-    public void setCloudService(CloudService cloudService) {
-        this.cloudService = cloudService;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public Map<Integer, InstanceType> getInstanceTypeMap() {
+        return instanceTypeMap;
     }
 
     public int getSla() {
         return sla;
     }
 
-    public void setSla(int sla) {
-        this.sla = sla;
+    public CloudService getCloudService() {
+        return cloudService;
     }
 
-    public UsageDistribution getNetUsageDistribution() {
-        return netUsageDistribution;
+    public Integer getId() {
+        return id;
     }
 
-    public void setNetUsageDistribution(UsageDistribution netUsageDistribution) {
-        this.netUsageDistribution = netUsageDistribution;
+    public Integer getStartTime() {
+        return startTime;
+    }
+
+    public Integer getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Integer endTime) {
+        this.endTime = endTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        VirtualMachine that = (VirtualMachine) o;
+
+        return id.equals(that.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + " ID: " + this.getId();
     }
 }

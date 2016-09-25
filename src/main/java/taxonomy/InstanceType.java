@@ -1,4 +1,4 @@
-package generator;
+package taxonomy;
 
 /**
  * Created by augusto on 9/18/16.
@@ -10,15 +10,19 @@ public class InstanceType {
     private Float cpu;
     private Float ram;
     private Float net;
-    private Float revenue;
+    private Float revenueCPU;
+    private Float revenueRAM;
+    private Float revenueNET;
 
-    public InstanceType(String instanceName, Float vCPU, Float cpu, Float ram, Float net, float revenue) {
+    public InstanceType(String instanceName, Float vCPU, Float cpu, Float ram, Float net, Float revenueCPU, Float revenueRAM, Float revenueNET) {
         this.instanceName = instanceName;
         this.vCPU = vCPU;
         this.cpu = cpu;
         this.ram = ram;
         this.net = net;
-        this.revenue = revenue;
+        this.revenueCPU = revenueCPU;
+        this.revenueRAM = revenueRAM;
+        this.revenueNET = revenueNET;
     }
 
     public String getInstanceName() {
@@ -61,11 +65,27 @@ public class InstanceType {
         this.net = net;
     }
 
-    public Float getRevenue() {
-        return revenue;
+    public Float getRevenueCPU() {
+        return revenueCPU;
     }
 
-    public void setRevenue(Float revenue) {
-        this.revenue = revenue;
+    public void setRevenueCPU(Float revenueCPU) {
+        this.revenueCPU = revenueCPU;
+    }
+
+    public Float getRevenueRAM() {
+        return revenueRAM;
+    }
+
+    public void setRevenueRAM(Float revenueRAM) {
+        this.revenueRAM = revenueRAM;
+    }
+
+    public Float getRevenueNET() {
+        return revenueNET;
+    }
+
+    public void setRevenueNET(Float revenueNET) {
+        this.revenueNET = revenueNET;
     }
 }

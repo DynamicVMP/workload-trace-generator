@@ -1,5 +1,10 @@
-import generator.*;
+import generator.CloudService;
+import generator.CloudTraceGenerator;
+import generator.configurations.ConfigurationManager;
 import taxonomy.HorizontalElasticity;
+import taxonomy.OverbookingDistribution;
+import taxonomy.VerticalElasticity;
+import utils.PrintTraceUtils;
 
 import java.util.List;
 
@@ -9,23 +14,43 @@ import java.util.List;
 public class CloudWorkloadTraceGenerator {
 
     public static void main(String[] args) {
-        ConfigurationManager.setScenarioStartTime(1);
-        ConfigurationManager.setScenarioEndTime(100);
-        ConfigurationManager.setNumberOfServices(100);
-        UsageConfiguration usageConfiguration = new UsageConfiguration(20, 100);
-        ConfigurationManager.setUsageConfiguration(usageConfiguration);
-        ConfigurationManager.setInputFileLocation("/home/augusto/Dropbox/tesis/repositories/cloud-workload-trace-generator/input/input.csv");
+        ConfigurationManager configurationManagerInstance = ConfigurationManager.getInstance();
 
-        HorizontalElasticity horElast = new HorizontalElasticity(1, 10, ConfigurationManager.getNumberOfServices(), ConfigurationManager.getTraceDuration());
-
-        List<CloudService> cloudServiceList = CloudTraceGenerator.generateVirtualMachinesRequestsArrivals(
-                horElast,
-                ConfigurationManager.getNumberOfServices(),
-                ConfigurationManager.getScenarioStartTime(),
-                ConfigurationManager.getScenarioEndTime()
+        HorizontalElasticity horizontalElasticity = new HorizontalElasticity(
+                configurationManagerInstance.getHorizontalElasticityConfiguration()
         );
 
-        List<String> formattedVMList = PrintTraceService.formatVMListOutput(cloudServiceList);
-        PrintTraceService.printCloudTraceToFile("/home/augusto/Dropbox/tesis/repositories/cloud-workload-trace-generator/output/output.out", formattedVMList);
+        VerticalElasticity verticalElasticity = new VerticalElasticity(
+                configurationManagerInstance.getVerticalElasticityConfiguration()
+        );
+
+        OverbookingDistribution serverOverbooking = new OverbookingDistribution(
+                configurationManagerInstance.getServerOverbookingConfiguration()
+        );
+
+        OverbookingDistribution networkOverbooking = new OverbookingDistribution(
+                configurationManagerInstance.getNetworkOverbookingConfiguration()
+        );
+
+        List<CloudService> cloudServiceList = CloudTraceGenerator.generateVirtualMachinesRequestsArrivals(
+                horizontalElasticity,
+                verticalElasticity,
+                serverOverbooking,
+                networkOverbooking,
+                configurationManagerInstance.getNumberOfServices(),
+                configurationManagerInstance.getScenarioStartTime(),
+                configurationManagerInstance.getScenarioEndTime()
+        );
+
+        List<String> formattedVMList = PrintTraceUtils.formatVMListOutput(
+                cloudServiceList,
+                configurationManagerInstance.getScenarioStartTime(),
+                configurationManagerInstance.getScenarioEndTime()
+        );
+
+        PrintTraceUtils.printCloudTraceToFile(
+                configurationManagerInstance.getOutputFileLocation(),
+                formattedVMList
+        );
     }
 }

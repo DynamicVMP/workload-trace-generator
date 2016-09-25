@@ -1,4 +1,6 @@
-package generator;
+package taxonomy;
+
+import generator.configurations.ConfigurationManager;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,9 +29,10 @@ public class InstanceManager {
     protected InstanceManager() {
         instanceTypeList = new ArrayList<>();
         random = new Random();
+        ConfigurationManager configurationManager = ConfigurationManager.getInstance();
 
         try {
-            Stream<String> stream = Files.lines(Paths.get(ConfigurationManager.getInputFileLocation()));
+            Stream<String> stream = Files.lines(Paths.get(ConfigurationManager.getInstance().getInputFileLocation()));
 
             stream.forEach(line -> {
                 String[] splittedLine = line.split(";");
@@ -41,9 +44,11 @@ public class InstanceManager {
                     Float ecu = Float.parseFloat(splittedLine[2]);
                     Float ram = Float.parseFloat(splittedLine[3]);
                     Float net = Float.parseFloat(splittedLine[4]);
-                    Float revenue = Float.parseFloat(splittedLine[5]);
+                    Float revenueCPU = ecu * configurationManager.getRevenueCPU();
+                    Float revenueRAM = ram * configurationManager.getRevenueRAM();
+                    Float revenueNET = net * configurationManager.getRevenueNET();
 
-                    instanceTypeList.add(new InstanceType(instanceName, vCPU, ecu, ram, net, revenue));
+                    instanceTypeList.add(new InstanceType(instanceName, vCPU, ecu, ram, net, revenueCPU, revenueRAM, revenueNET));
                 }
             });
         } catch (IOException e) {
@@ -52,7 +57,11 @@ public class InstanceManager {
 
     }
 
-    public InstanceType getRandomInstanceType(){
-        return instanceTypeList.get(random.nextInt(instanceTypeList.size()));
+    public InstanceType getInstanceType(int instanceTypeIndex) {
+        return instanceTypeList.get(instanceTypeIndex);
+    }
+
+    public Integer getInstanceTypeQuantity() {
+        return instanceTypeList.size();
     }
 }

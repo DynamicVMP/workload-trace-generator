@@ -1,4 +1,6 @@
-package generator;
+package generator.configurations;
+
+import utils.Constants;
 
 /**
  * Created by augusto on 9/18/16.
@@ -13,12 +15,12 @@ public class UsageConfiguration {
     public UsageConfiguration(Integer floor, Integer ceiling) {
         this.floor = floor;
         this.ceiling = ceiling;
-        this.distributionType = "UNIFORM";
+        this.distributionType = Constants.UNIFORM;
     }
 
     public UsageConfiguration(float lambda) {
         this.lambda = lambda;
-        this.distributionType = "POISSON";
+        this.distributionType = Constants.POISSON;
     }
 
     public Integer getFloor() {
