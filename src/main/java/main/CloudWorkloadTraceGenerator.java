@@ -18,7 +18,11 @@ public class CloudWorkloadTraceGenerator {
     private CloudWorkloadTraceGenerator() {}
 
     public static void main(String[] args) {
+        String configFile = args[0];
         ConfigurationManager configurationManagerInstance = ConfigurationManager.getInstance();
+        if ( configFile != null && configFile.length() > 0 ) {
+            configurationManagerInstance.initializeFromFile(configFile);
+        }
 
         HorizontalTaxonomy horizontalElasticity = new HorizontalTaxonomy(
                 configurationManagerInstance.getHorizontalElasticityConfiguration()

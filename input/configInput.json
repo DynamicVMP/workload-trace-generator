@@ -1,0 +1,30 @@
+{
+  "scenarioStartTime": 1,
+  "scenarioEndTime": 100,
+  "numberOfServices": 100,
+  "revenueCPU": "0.01F",
+  "revenueRAM": "0.002F",
+  "revenueNET": "0.0004F",
+  "instanceTypesFileLocation": "input/instanceTypes.csv",
+  "outputFileLocation": "output/output.csv",
+  "horizontalElasticityConfiguration": {
+    "distributionType": "UNIFORM",
+    "floor": 1,
+    "ceiling": 100
+  },
+  "verticalElasticityConfiguration": {
+    "distributionType": "UNIFORM",
+    "floor": 1,
+    "ceiling": 100
+  },
+  "serverOverbookingConfiguration": {
+    "distributionType": "UNIFORM",
+    "floor": 1,
+    "ceiling": 100
+  },
+  "networkOverbookingConfiguration": {
+    "distributionType": "UNIFORM",
+    "floor": 1,
+    "ceiling": 100
+  }
+}

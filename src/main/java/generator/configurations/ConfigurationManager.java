@@ -1,5 +1,16 @@
 package generator.configurations;
 
+import com.google.gson.Gson;
+import org.apache.log4j.Logger;
+import utils.PrintTraceUtilsException;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
+
 /**
  * <p>Contains most of the configuration parameter to run the generator</p>
  * @author Augusto Amarilla
@@ -7,20 +18,20 @@ package generator.configurations;
  * @version 1.0
  */
 public class ConfigurationManager {
+    private static final Logger logger = Logger.getLogger(ConfigurationManager.class);
+
     private static ConfigurationManager instance = null;
     private static final Integer MAX_VMS_PER_SERVICE = 10;
 
-    private final UsageConfiguration usageConfiguration;
-    private final Integer scenarioStartTime;
-    private final Integer scenarioEndTime;
-    private final Integer numberOfServices;
-    private final String instanceTypesFileLocation;
-    private final String outputFileLocation;
+    private Integer scenarioStartTime;
+    private Integer scenarioEndTime;
+    private Integer numberOfServices;
+    private String instanceTypesFileLocation;
+    private String outputFileLocation;
 
-    private final Float revenueCPU;
-    private final Float revenueRAM;
-    private final Float revenueNET;
-    private final String locationPrefix;
+    private Float revenueCPU;
+    private Float revenueRAM;
+    private Float revenueNET;
     private ElasticityConfiguration horizontalElasticityConfiguration;
     private ElasticityConfiguration verticalElasticityConfiguration;
     private ElasticityConfiguration serverOverbookingConfiguration;
@@ -30,22 +41,56 @@ public class ConfigurationManager {
         scenarioStartTime = 1;
         scenarioEndTime = 100;
         numberOfServices = 100;
-        usageConfiguration = new UsageConfiguration(20, 100);
 
-        revenueCPU = 0.1F;
-        revenueRAM = 0.05F;
-        revenueNET = 0.001F;
+        revenueCPU = 0.01F;
+        revenueRAM = 0.002F;
+        revenueNET = 0.0004F;
 
-        locationPrefix = "./";
         instanceTypesFileLocation = "input/instanceTypes.csv";
-        outputFileLocation = "output/output.out";
+        outputFileLocation = "output/output.csv";
 
         // Important the ceiling of the Horizontal Elasticity Distribution must not exceed the Maximum number of VMs per Service
-        horizontalElasticityConfiguration = new ElasticityConfiguration(2, 10); // Testing: a Uniform distribution with parameters floor: 2 and ceiling: 10
-        verticalElasticityConfiguration = new ElasticityConfiguration(5F); // Testing: a Uniform distribution with parameters floor: 2 and ceiling: 10
+        horizontalElasticityConfiguration = new ElasticityConfiguration(1, 11);
+        verticalElasticityConfiguration = new ElasticityConfiguration(1,11);
 
-        serverOverbookingConfiguration = new ElasticityConfiguration(0, 100);
-        networkOverbookingConfiguration = new ElasticityConfiguration(0, 100);
+        serverOverbookingConfiguration = new ElasticityConfiguration(70F);
+        networkOverbookingConfiguration = new ElasticityConfiguration(70F);
+    }
+
+    public void initializeFromFile(String filePath) {
+        Path pathToConfigFile = Paths.get(filePath);
+
+        try {
+            if (Files.isReadable(pathToConfigFile)) {
+                Stream<String> stream = Files.lines(pathToConfigFile);
+                String jsonConfigInput = stream.reduce("", String::concat);
+                Gson gson = new Gson();
+                ConfigurationData configurationData = gson.fromJson(jsonConfigInput, ConfigurationData.class);
+
+                scenarioStartTime = configurationData.getScenarioStartTime().orElse(scenarioStartTime);
+                scenarioEndTime = configurationData.getScenarioEndTime().orElse(scenarioEndTime);
+                numberOfServices = configurationData.getNumberOfServices().orElse(numberOfServices);
+                instanceTypesFileLocation = configurationData.getInstanceTypesFileLocation().orElse(instanceTypesFileLocation);
+                outputFileLocation = configurationData.getOutputFileLocation().orElse(outputFileLocation);
+
+                revenueCPU = configurationData.getRevenueCPU().orElse(revenueCPU);
+                revenueRAM = configurationData.getRevenueRAM().orElse(revenueRAM);
+                revenueNET = configurationData.getRevenueNET().orElse(revenueNET);
+
+                horizontalElasticityConfiguration = configurationData.getHorizontalElasticityConfiguration().orElse(horizontalElasticityConfiguration);
+                verticalElasticityConfiguration = configurationData.getVerticalElasticityConfiguration().orElse(verticalElasticityConfiguration);
+                serverOverbookingConfiguration = configurationData.getServerOverbookingConfiguration().orElse(serverOverbookingConfiguration);
+                networkOverbookingConfiguration = configurationData.getNetworkOverbookingConfiguration().orElse(networkOverbookingConfiguration);
+            } else {
+                throw new PrintTraceUtilsException("The configuration file " + filePath + " is not readable");
+            }
+        } catch (FileNotFoundException e) {
+            logger.error("Input file not found: ["+ ConfigurationManager.getInstance().getInstanceTypesFileLocation() +"]", e);
+            throw new PrintTraceUtilsException("");
+        } catch (IOException e) {
+            logger.error("Error printing the output file", e);
+            throw new PrintTraceUtilsException("");
+        }
     }
 
     public static ConfigurationManager getInstance() {
@@ -68,16 +113,8 @@ public class ConfigurationManager {
         return revenueNET;
     }
 
-    public Integer getTraceDuration() {
-        return scenarioEndTime - scenarioStartTime + 1;
-    }
-
     public Integer getMaxVmsPerService() {
         return MAX_VMS_PER_SERVICE;
-    }
-
-    public UsageConfiguration getUsageConfiguration() {
-        return usageConfiguration;
     }
 
     public Integer getScenarioStartTime() {
@@ -93,11 +130,11 @@ public class ConfigurationManager {
     }
 
     public String getInstanceTypesFileLocation() {
-        return locationPrefix + instanceTypesFileLocation;
+        return instanceTypesFileLocation;
     }
 
     public String getOutputFileLocation() {
-        return locationPrefix + outputFileLocation;
+        return outputFileLocation;
     }
 
     public ElasticityConfiguration getHorizontalElasticityConfiguration() {

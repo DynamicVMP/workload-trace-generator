@@ -70,10 +70,10 @@ public class PrintTraceUtils {
             Files.write(pathToOutputFile, formattedVMList, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (FileNotFoundException e) {
             logger.error("Input file not found: ["+ ConfigurationManager.getInstance().getInstanceTypesFileLocation() +"]", e);
-            throw new PrintTraceUtilsException();
+            throw new PrintTraceUtilsException("Input file not found: ["+ ConfigurationManager.getInstance().getInstanceTypesFileLocation() +"]");
         } catch (IOException e) {
             logger.error("Error printing the output file", e);
-            throw new PrintTraceUtilsException();
+            throw new PrintTraceUtilsException("Unknown error");
         }
     }
 }
