@@ -68,6 +68,8 @@ public class PrintTraceUtils {
         try {
             Files.write(pathToOutputFile, "".getBytes(), StandardOpenOption.CREATE);
             Files.write(pathToOutputFile, formattedVMList, StandardOpenOption.TRUNCATE_EXISTING);
+
+            logger.debug("Printed trace into file: " + outputFileLocation);
         } catch (FileNotFoundException e) {
             logger.error("Input file not found: ["+ ConfigurationManager.getInstance().getInstanceTypesFileLocation() +"]", e);
             throw new PrintTraceUtilsException("Input file not found: ["+ ConfigurationManager.getInstance().getInstanceTypesFileLocation() +"]");

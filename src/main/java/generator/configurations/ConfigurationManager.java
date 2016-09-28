@@ -36,6 +36,7 @@ public class ConfigurationManager {
     private ElasticityConfiguration verticalElasticityConfiguration;
     private ElasticityConfiguration serverOverbookingConfiguration;
     private ElasticityConfiguration networkOverbookingConfiguration;
+    private String inputFilePath;
 
     protected ConfigurationManager() {
         scenarioStartTime = 1;
@@ -62,6 +63,8 @@ public class ConfigurationManager {
 
         try {
             if (Files.isReadable(pathToConfigFile)) {
+                this.inputFilePath = filePath;
+
                 Stream<String> stream = Files.lines(pathToConfigFile);
                 String jsonConfigInput = stream.reduce("", String::concat);
                 Gson gson = new Gson();
@@ -82,14 +85,14 @@ public class ConfigurationManager {
                 serverOverbookingConfiguration = configurationData.getServerOverbookingConfiguration().orElse(serverOverbookingConfiguration);
                 networkOverbookingConfiguration = configurationData.getNetworkOverbookingConfiguration().orElse(networkOverbookingConfiguration);
             } else {
-                throw new PrintTraceUtilsException("The configuration file " + filePath + " is not readable");
+                throw new ConfigurationManagerException("The configuration file " + filePath + " is not readable");
             }
         } catch (FileNotFoundException e) {
-            logger.error("Input file not found: ["+ ConfigurationManager.getInstance().getInstanceTypesFileLocation() +"]", e);
-            throw new PrintTraceUtilsException("");
+            logger.error("Input file not found: ["+ inputFilePath +"]", e);
+            throw new ConfigurationManagerException("");
         } catch (IOException e) {
-            logger.error("Error printing the output file", e);
-            throw new PrintTraceUtilsException("");
+            logger.error("Error reading the input file " + filePath, e);
+            throw new ConfigurationManagerException("");
         }
     }
 
@@ -151,5 +154,9 @@ public class ConfigurationManager {
 
     public ElasticityConfiguration getNetworkOverbookingConfiguration() {
         return networkOverbookingConfiguration;
+    }
+
+    public String getInputFilePath() {
+        return inputFilePath;
     }
 }

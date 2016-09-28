@@ -4,7 +4,7 @@ OPEN_BRACKET='{'
 CLOSE_BRACKET="}"
 
 # Static part of the configuration input file
-STATIC_CONFIG='"scenarioStartTime":1,"scenarioEndTime":100,"numberOfServices":100,"revenueCPU":"0.01F","revenueRAM":"0.002F","revenueNET":"0.0004F","instanceTypesFileLocation":"input/instanceTypes.csv",'
+STATIC_CONFIG='"scenarioStartTime":1,"scenarioEndTime":1000,"numberOfServices":100,"revenueCPU":"0.01F","revenueRAM":"0.002F","revenueNET":"0.0004F","instanceTypesFileLocation":"input/instanceTypes.csv",'
 
 # Output file path configuration
 START_OUTPUT_FILENAME='"outputFileLocation":"'
@@ -78,8 +78,7 @@ for (( i=0;i<$ELEMENTS;i++ )); do
 
           print_file $HORZ_ELAST $VERT_ELAST $SERV_OVER $NET_OVER $FILE_NAME $OUTPUT_FILE_NAME
 
-          echo "Running Clour Trace Generator for input: "$FILE_NAME
-          echo "Output stored in: "$OUTPUT_FILE_NAME
+          echo "Launched Cloud Trace Generator with input: "$FILE_NAME
 
           java -jar cloud-workload-trace-generator.jar $FILE_NAME
         done

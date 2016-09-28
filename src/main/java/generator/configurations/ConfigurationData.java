@@ -22,6 +22,7 @@ public class ConfigurationData {
     private ElasticityConfiguration networkOverbookingConfiguration;
 
     public ConfigurationData() {
+        // This empty constructor is requested by the GSON library
     }
 
     public Optional<Integer> getScenarioStartTime() {
