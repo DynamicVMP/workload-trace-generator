@@ -1,6 +1,6 @@
 {
   "scenarioStartTime": 1,
-  "scenarioEndTime": 100,
+  "scenarioEndTime": 1000,
   "numberOfServices": 100,
   "revenueCPU": "0.01F",
   "revenueRAM": "0.002F",
@@ -10,7 +10,7 @@
   "horizontalElasticityConfiguration": {
     "distributionType": "UNIFORM",
     "floor": 1,
-    "ceiling": 100
+    "ceiling": 10
   },
   "verticalElasticityConfiguration": {
     "distributionType": "UNIFORM",
@@ -18,13 +18,11 @@
     "ceiling": 100
   },
   "serverOverbookingConfiguration": {
-    "distributionType": "UNIFORM",
-    "floor": 1,
-    "ceiling": 100
+    "distributionType": "POISSON",
+    "lambda": "70F"
   },
   "networkOverbookingConfiguration": {
-    "distributionType": "UNIFORM",
-    "floor": 1,
-    "ceiling": 100
+    "distributionType": "POISSON",
+    "lambda": "70F"
   }
 }

@@ -24,7 +24,11 @@ public class CloudService {
         this.id = id;
 
         this.startTime = random.nextInt(timeDiff) + startTime;
-        this.endTime = random.nextInt(timeDiff) + startTime;
+        Integer endTimeHolder = random.nextInt(timeDiff) + startTime;
+        while (endTimeHolder <= this.startTime) {
+            endTimeHolder = random.nextInt(timeDiff) + startTime;
+        }
+        this.endTime = endTimeHolder;
         this.virtualMachineNextId = 0;
     }
 

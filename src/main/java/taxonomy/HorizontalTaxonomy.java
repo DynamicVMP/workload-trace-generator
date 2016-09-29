@@ -1,5 +1,6 @@
 package taxonomy;
 
+import generator.configurations.ConfigurationManager;
 import generator.configurations.ElasticityConfiguration;
 
 /**
@@ -18,6 +19,12 @@ public class HorizontalTaxonomy extends TaxonomyAbstract {
     }
 
     public Integer getNextVmQuantity() {
-        return this.distribution.getNextValue();
+        Integer vmQuantity = this.distribution.getNextValue();
+
+        while (vmQuantity <= 0 || vmQuantity > ConfigurationManager.getInstance().getMaxVmsPerService()) {
+            vmQuantity = this.distribution.getNextValue();
+        }
+
+        return vmQuantity;
     }
 }
