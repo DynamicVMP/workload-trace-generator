@@ -9,6 +9,7 @@ public class ConfigurationData {
     private Integer scenarioStartTime;
     private Integer scenarioEndTime;
     private Integer numberOfServices;
+    private Integer maxNumberOfVMPerService;
     private String instanceTypesFileLocation;
     private String outputFileLocation;
 
@@ -47,6 +48,14 @@ public class ConfigurationData {
 
     public void setNumberOfServices(Integer numberOfServices) {
         this.numberOfServices = numberOfServices;
+    }
+
+    public Optional<Integer> getMaxNumberOfVMPerService() {
+        return Optional.of(maxNumberOfVMPerService);
+    }
+
+    public void setMaxNumberOfVMPerService(Integer maxNumberOfVMPerService) {
+        this.maxNumberOfVMPerService = maxNumberOfVMPerService;
     }
 
     public Optional<String> getInstanceTypesFileLocation() {

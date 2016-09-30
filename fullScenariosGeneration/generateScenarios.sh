@@ -4,7 +4,7 @@ OPEN_BRACKET='{'
 CLOSE_BRACKET="}"
 
 # Static part of the configuration input file
-STATIC_CONFIG='"scenarioStartTime":1,"scenarioEndTime":1000,"numberOfServices":100,"revenueCPU":"0.01F","revenueRAM":"0.002F","revenueNET":"0.0004F","instanceTypesFileLocation":"input/instanceTypes.csv",'
+STATIC_CONFIG='"scenarioStartTime":1,"scenarioEndTime":1000,"numberOfServices":100,"maxNumberOfVMPerService":10,"revenueCPU":"0.01F","revenueRAM":"0.002F","revenueNET":"0.0004F","instanceTypesFileLocation":"input/instanceTypes.csv",'
 
 # Output file path configuration
 START_OUTPUT_FILENAME='"outputFileLocation":"'
@@ -19,8 +19,8 @@ NET_UNI='"networkOverbookingConfiguration":{"distributionType":"UNIFORM","floor"
 # Poisson parameters
 HORZ_POS='"horizontalElasticityConfiguration":{"distributionType":"POISSON","lambda":"7F"},'
 VERT_POS='"verticalElasticityConfiguration":{"distributionType":"POISSON","lambda":"5F"},'
-SERV_POS='"serverOverbookingConfiguration":{"distributionType":"POISSON","lambda":"70F"},'
-NET_POS='"networkOverbookingConfiguration":{"distributionType":"POISSON","lambda":"70F"}'
+SERV_POS='"serverOverbookingConfiguration":{"distributionType":"POISSON","lambda":"50F"},'
+NET_POS='"networkOverbookingConfiguration":{"distributionType":"POISSON","lambda":"50F"}'
 
 DIST_NAMES=('u' 'p')
 ELEMENTS=${#DIST_NAMES[@]}

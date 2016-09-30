@@ -24,6 +24,7 @@ public class PrintTraceUtils {
     private PrintTraceUtils() {}
 
     public static List<String> formatVMListOutput(List<CloudService> cloudServiceList, Integer scenarioStartTime, Integer scenarioEndTime) {
+        logger.debug("Start to format the virtual machines traces to snapshots");
         List<String> cloudGeneratedTrace = new ArrayList<>();
 
         Integer timeIndex = scenarioStartTime;
@@ -63,6 +64,7 @@ public class PrintTraceUtils {
     }
 
     public static void printCloudTraceToFile(String outputFileLocation, List<String> formattedVMList) {
+        logger.debug("Start to print the snapshots to the output file");
         Path pathToOutputFile = Paths.get(outputFileLocation);
 
         try {

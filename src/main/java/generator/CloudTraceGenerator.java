@@ -1,5 +1,6 @@
 package generator;
 
+import org.apache.log4j.Logger;
 import taxonomy.HorizontalTaxonomy;
 import taxonomy.OverbookingTaxonomy;
 import taxonomy.VerticalTaxonomy;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
  * Created by augusto on 9/17/16.
  */
 public class CloudTraceGenerator {
+    private static Logger logger = Logger.getLogger(CloudTraceGenerator.class);
 
     private static List<CloudService> cloudServiceList;
 
@@ -33,7 +35,7 @@ public class CloudTraceGenerator {
                     .filter(cloudService -> finalActualTime >= cloudService.getStartTime() && finalActualTime <= cloudService.getEndTime())
                     .collect(Collectors.toList());
 
-            livingCloudServices.forEach(cloudService -> {
+            livingCloudServices.parallelStream().forEach(cloudService -> {
                 Integer vmQuantity = horizontalElasticity.getNextVmQuantity();
 
                 generateVirtualMachinesForSingleService(finalActualTime, vmQuantity, cloudService, serverOverbooking, networkOverbooking, verticalElasticity);
@@ -86,7 +88,7 @@ public class CloudTraceGenerator {
 
         livingVirtualMachineList = cloudService.getLivingVirtualMachines(actualTime);
 
-        livingVirtualMachineList.forEach(virtualMachine -> virtualMachine.addStateSnapshot(
+        livingVirtualMachineList.parallelStream().forEach(virtualMachine -> virtualMachine.addStateSnapshot(
                 serverOverbooking.getNextUsagePercentage(),
                 networkOverbooking.getNextUsagePercentage(),
                 verticalElasticity.getNextInstanceType(),
@@ -95,6 +97,7 @@ public class CloudTraceGenerator {
     }
 
     private static void initializeCloudServiceList(Integer numberOfServices, Integer initTime, Integer endTime) {
+        logger.debug("Start generation of Cloud Service List");
         cloudServiceList = new ArrayList<>();
 
         for (int i = 0; i < numberOfServices; i++) {

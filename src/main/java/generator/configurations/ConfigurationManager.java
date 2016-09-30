@@ -2,7 +2,6 @@ package generator.configurations;
 
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
-import utils.PrintTraceUtilsException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,7 +20,7 @@ public class ConfigurationManager {
     private static final Logger logger = Logger.getLogger(ConfigurationManager.class);
 
     private static ConfigurationManager instance = null;
-    private static final Integer MAX_VMS_PER_SERVICE = 10;
+    private static Integer maxNumberOfVMPerService = 10;
 
     private Integer scenarioStartTime;
     private Integer scenarioEndTime;
@@ -73,6 +72,7 @@ public class ConfigurationManager {
                 scenarioStartTime = configurationData.getScenarioStartTime().orElse(scenarioStartTime);
                 scenarioEndTime = configurationData.getScenarioEndTime().orElse(scenarioEndTime);
                 numberOfServices = configurationData.getNumberOfServices().orElse(numberOfServices);
+                maxNumberOfVMPerService = configurationData.getMaxNumberOfVMPerService().orElse(maxNumberOfVMPerService);
                 instanceTypesFileLocation = configurationData.getInstanceTypesFileLocation().orElse(instanceTypesFileLocation);
                 outputFileLocation = configurationData.getOutputFileLocation().orElse(outputFileLocation);
 
@@ -117,7 +117,7 @@ public class ConfigurationManager {
     }
 
     public Integer getMaxVmsPerService() {
-        return MAX_VMS_PER_SERVICE;
+        return maxNumberOfVMPerService;
     }
 
     public Integer getScenarioStartTime() {

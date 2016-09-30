@@ -18,17 +18,23 @@ public class CloudService {
 
     public CloudService(Integer id, Integer startTime, Integer endTime){
         Random random = new Random();
-        Integer timeDiff = endTime - startTime;
+        Integer timeDiff = endTime - startTime + 1;
         this.virtualMachineList = new HashSet<>();
 
         this.id = id;
 
-        this.startTime = random.nextInt(timeDiff) + startTime;
+        Integer startTimeHolder = random.nextInt(timeDiff) + startTime;
+        while (startTimeHolder >= endTime) {
+            startTimeHolder = random.nextInt(timeDiff) + startTime;
+        }
+        this.startTime = startTimeHolder;
+
         Integer endTimeHolder = random.nextInt(timeDiff) + startTime;
         while (endTimeHolder <= this.startTime) {
             endTimeHolder = random.nextInt(timeDiff) + startTime;
         }
         this.endTime = endTimeHolder;
+
         this.virtualMachineNextId = 0;
     }
 

@@ -2,6 +2,7 @@
   "scenarioStartTime": 1,
   "scenarioEndTime": 1000,
   "numberOfServices": 100,
+  "maxNumberOfVMPerService": 10,
   "revenueCPU": "0.01F",
   "revenueRAM": "0.002F",
   "revenueNET": "0.0004F",
