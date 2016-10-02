@@ -39,8 +39,14 @@ public class VirtualMachine {
     }
 
     public void addStateSnapshot(Integer serverUsagePercentage, Integer networkUsagePercentage, InstanceType instanceType, Integer snapshotTime) {
-        this.serverUsageMap.put(snapshotTime, serverUsagePercentage);
-        this.networkUsageMap.put(snapshotTime, networkUsagePercentage);
+        if (serverUsageMap.isEmpty()){
+            this.serverUsageMap.put(snapshotTime, 100);
+            this.networkUsageMap.put(snapshotTime, 100);
+        } else {
+            this.serverUsageMap.put(snapshotTime, serverUsagePercentage);
+            this.networkUsageMap.put(snapshotTime, networkUsagePercentage);
+        }
+
         this.instanceTypeMap.put(snapshotTime, instanceType);
     }
 

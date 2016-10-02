@@ -11,7 +11,7 @@
   "horizontalElasticityConfiguration": {
     "distributionType": "UNIFORM",
     "floor": 1,
-    "ceiling": 10
+    "ceiling": 11
   },
   "verticalElasticityConfiguration": {
     "distributionType": "UNIFORM",

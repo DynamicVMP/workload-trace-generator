@@ -56,7 +56,7 @@ public class PrintTraceUtils {
         row.append(vm.getInstanceTypeMap().get(finalTimeIndex).getRevenueCPU()).append(DELIMITER);  // REVENUE_CPU
         row.append(vm.getInstanceTypeMap().get(finalTimeIndex).getRevenueRAM()).append(DELIMITER);  // REVENUE_RAM
         row.append(vm.getInstanceTypeMap().get(finalTimeIndex).getRevenueNET()).append(DELIMITER);  // REVENUE_NET
-        row.append(vm.getSla()).append(DELIMITER);                                                  // SLA
+//        row.append(vm.getSla()).append(DELIMITER);                                                  // SLA
         row.append(vm.getStartTime()).append(DELIMITER);                                            // INIT_TIME
         row.append(vm.getEndTime());                                                                // END_TIME
 
