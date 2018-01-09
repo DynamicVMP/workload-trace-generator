@@ -21,7 +21,7 @@ public class HorizontalTaxonomy extends TaxonomyAbstract {
     public Integer getNextVmQuantity() {
         Integer vmQuantity = this.distribution.getNextValue();
 
-        while (vmQuantity <= 0 || vmQuantity > ConfigurationManager.getInstance().getMaxVmsPerService()) {
+        while (vmQuantity < 0 || vmQuantity > ConfigurationManager.getInstance().getMaxVmsPerService()) {
             vmQuantity = this.distribution.getNextValue();
         }
 

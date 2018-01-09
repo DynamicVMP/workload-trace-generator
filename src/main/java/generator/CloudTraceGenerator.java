@@ -5,7 +5,11 @@ import taxonomy.HorizontalTaxonomy;
 import taxonomy.OverbookingTaxonomy;
 import taxonomy.VerticalTaxonomy;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -35,7 +39,7 @@ public class CloudTraceGenerator {
                     .filter(cloudService -> finalActualTime >= cloudService.getStartTime() && finalActualTime <= cloudService.getEndTime())
                     .collect(Collectors.toList());
 
-            livingCloudServices.parallelStream().forEach(cloudService -> {
+            livingCloudServices.forEach(cloudService -> {
                 Integer vmQuantity = horizontalElasticity.getNextVmQuantity();
 
                 generateVirtualMachinesForSingleService(finalActualTime, vmQuantity, cloudService, serverOverbooking, networkOverbooking, verticalElasticity);
@@ -70,7 +74,7 @@ public class CloudTraceGenerator {
                 }
             }
 
-            vmsToKill.parallelStream().forEach(oldVm -> oldVm.setEndTime(actualTime - 1));
+            vmsToKill.stream().forEach(oldVm -> oldVm.setEndTime(actualTime - 1));
 
         } else if (livingVirtualMachineList.size() < vmQuantity) {
             while (livingVirtualMachineList.size() < vmQuantity) {
@@ -88,7 +92,7 @@ public class CloudTraceGenerator {
 
         livingVirtualMachineList = cloudService.getLivingVirtualMachines(actualTime);
 
-        livingVirtualMachineList.parallelStream().forEach(virtualMachine -> virtualMachine.addStateSnapshot(
+        livingVirtualMachineList.forEach(virtualMachine -> virtualMachine.addStateSnapshot(
                 serverOverbooking.getNextUsagePercentage(),
                 networkOverbooking.getNextUsagePercentage(),
                 verticalElasticity.getNextInstanceType(),

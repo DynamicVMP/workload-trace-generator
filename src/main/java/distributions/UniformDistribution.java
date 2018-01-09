@@ -19,7 +19,11 @@ public class UniformDistribution implements DistributionInterface {
 
     @Override
     public Integer getNextValue() {
-        return this.uniformGenerator.nextInt(ceiling - floor) + floor;
+        if ( floor.equals(ceiling) ) {
+            return ceiling;
+        } else {
+            return this.uniformGenerator.nextInt(ceiling - floor) + floor;
+        }
     }
 
     public Integer getFloor() {

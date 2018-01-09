@@ -64,7 +64,7 @@ public class CloudService {
     }
 
     public Set<VirtualMachine> getLivingVirtualMachines(Integer actualTime) {
-        return virtualMachineList.parallelStream()
+        return virtualMachineList.stream()
                 .filter(virtualMachine -> actualTime >= virtualMachine.getStartTime() && actualTime <= virtualMachine.getEndTime())
                 .collect(Collectors.toSet());
     }
