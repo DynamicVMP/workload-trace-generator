@@ -23,6 +23,7 @@ public class CloudTraceGenerator {
     private CloudTraceGenerator() {}
 
     public static List<CloudService> generateVirtualMachinesRequestsArrivals(
+            boolean staticServiceGeneration,
             HorizontalTaxonomy horizontalElasticity,
             VerticalTaxonomy verticalElasticity,
             OverbookingTaxonomy serverOverbooking,
@@ -31,7 +32,7 @@ public class CloudTraceGenerator {
             int initTime,
             int endTime
     ) {
-        initializeCloudServiceList(numberOfServices, initTime, endTime);
+        initializeCloudServiceList(numberOfServices, initTime, endTime, staticServiceGeneration);
 
         for (int actualTime = initTime; actualTime < endTime; actualTime++){
             final int finalActualTime = actualTime;
@@ -74,7 +75,7 @@ public class CloudTraceGenerator {
                 }
             }
 
-            vmsToKill.stream().forEach(oldVm -> oldVm.setEndTime(actualTime - 1));
+            vmsToKill.forEach(oldVm -> oldVm.setEndTime(actualTime - 1));
 
         } else if (livingVirtualMachineList.size() < vmQuantity) {
             while (livingVirtualMachineList.size() < vmQuantity) {
@@ -100,12 +101,23 @@ public class CloudTraceGenerator {
         ));
     }
 
-    private static void initializeCloudServiceList(Integer numberOfServices, Integer initTime, Integer endTime) {
+    private static void initializeCloudServiceList(Integer numberOfServices, Integer initTime, Integer endTime, boolean staticServiceGeneration) {
         logger.debug("Start generation of Cloud Service List");
         cloudServiceList = new ArrayList<>();
 
         for (int i = 0; i < numberOfServices; i++) {
-            cloudServiceList.add(new CloudService(i, initTime, endTime));
+            CloudService cloudService;
+
+            // If the service is statically generated then it is alive during the entire simulation time
+            if ( staticServiceGeneration ) {
+                cloudService = new CloudService(i, initTime, endTime);
+                cloudService.setStartTime(initTime);
+                cloudService.setEndTime(endTime);
+            } else {
+                cloudService = new CloudService(i, initTime, endTime);
+            }
+
+            cloudServiceList.add(cloudService);
         }
     }
 }

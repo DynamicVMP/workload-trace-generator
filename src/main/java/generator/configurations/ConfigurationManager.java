@@ -31,12 +31,17 @@ public class ConfigurationManager {
     private Float revenueCPU;
     private Float revenueRAM;
     private Float revenueNET;
+
+    private boolean staticServiceGeneration;
     private ElasticityConfiguration horizontalElasticityConfiguration;
     private ElasticityConfiguration verticalElasticityConfiguration;
     private ElasticityConfiguration serverOverbookingConfiguration;
     private ElasticityConfiguration networkOverbookingConfiguration;
     private String inputFilePath;
 
+    /**
+     * Setting up default values to the Configuration Manager
+     */
     protected ConfigurationManager() {
         scenarioStartTime = 1;
         scenarioEndTime = 100;
@@ -48,6 +53,8 @@ public class ConfigurationManager {
 
         instanceTypesFileLocation = "input/instanceTypes.csv";
         outputFileLocation = "output/output.csv";
+
+        staticServiceGeneration = false;
 
         // Important the ceiling of the Horizontal Elasticity Distribution must not exceed the Maximum number of VMs per Service
         horizontalElasticityConfiguration = new ElasticityConfiguration(1, 11);
@@ -80,6 +87,7 @@ public class ConfigurationManager {
                 revenueRAM = configurationData.getRevenueRAM().orElse(revenueRAM);
                 revenueNET = configurationData.getRevenueNET().orElse(revenueNET);
 
+                staticServiceGeneration = configurationData.isStaticServiceGeneration().orElse(false);
                 horizontalElasticityConfiguration = configurationData.getHorizontalElasticityConfiguration().orElse(horizontalElasticityConfiguration);
                 verticalElasticityConfiguration = configurationData.getVerticalElasticityConfiguration().orElse(verticalElasticityConfiguration);
                 serverOverbookingConfiguration = configurationData.getServerOverbookingConfiguration().orElse(serverOverbookingConfiguration);
@@ -158,5 +166,9 @@ public class ConfigurationManager {
 
     public String getInputFilePath() {
         return inputFilePath;
+    }
+
+    public boolean isServiceGenerationStatic() {
+        return staticServiceGeneration;
     }
 }

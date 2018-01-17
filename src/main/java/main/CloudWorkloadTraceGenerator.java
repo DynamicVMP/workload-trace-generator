@@ -47,6 +47,7 @@ public class CloudWorkloadTraceGenerator {
         );
 
         List<CloudService> cloudServiceList = CloudTraceGenerator.generateVirtualMachinesRequestsArrivals(
+                configurationManagerInstance.isServiceGenerationStatic(),
                 horizontalElasticity,
                 verticalElasticity,
                 serverOverbooking,

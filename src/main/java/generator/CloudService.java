@@ -12,8 +12,8 @@ public class CloudService {
 
     private final Integer id;
     private final Set<VirtualMachine> virtualMachineList;
-    private final Integer startTime;
-    private final Integer endTime;
+    private Integer startTime;
+    private Integer endTime;
     private Integer virtualMachineNextId;
 
     public CloudService(Integer id, Integer startTime, Integer endTime){
@@ -46,8 +46,16 @@ public class CloudService {
         return startTime;
     }
 
+    public void setStartTime(Integer startTime) {
+        this.startTime = startTime;
+    }
+
     public Integer getEndTime() {
         return endTime;
+    }
+
+    public void setEndTime(Integer endTime) {
+        this.endTime = endTime;
     }
 
     public Integer getVirtualMachineNextId() {

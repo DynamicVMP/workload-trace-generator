@@ -17,6 +17,8 @@ public class ConfigurationData {
     private Float revenueRAM;
     private Float revenueNET;
 
+    private Boolean staticServiceGeneration;
+
     private ElasticityConfiguration horizontalElasticityConfiguration;
     private ElasticityConfiguration verticalElasticityConfiguration;
     private ElasticityConfiguration serverOverbookingConfiguration;
@@ -96,6 +98,14 @@ public class ConfigurationData {
 
     public void setRevenueNET(Float revenueNET) {
         this.revenueNET = revenueNET;
+    }
+
+    public Optional<Boolean> isStaticServiceGeneration() {
+        return Optional.ofNullable(staticServiceGeneration);
+    }
+
+    public void setStaticServiceGeneration(Boolean staticServiceGeneration) {
+        this.staticServiceGeneration = staticServiceGeneration;
     }
 
     public Optional<ElasticityConfiguration> getHorizontalElasticityConfiguration() {
